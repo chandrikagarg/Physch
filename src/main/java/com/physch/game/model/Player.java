@@ -1,13 +1,8 @@
 package com.physch.game.model;
-
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.URL;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -53,6 +48,11 @@ public class Player extends User {
         setAlias(builder.alias);
         setPsychFaceURL(builder.psychFaceURL);
         setPicURL(builder.picURL);
+    }
+
+    public Game getCurrentGame() {
+        //todo
+        return new Game();
     }
 
     public static final class Builder {

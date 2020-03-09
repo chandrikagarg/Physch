@@ -16,7 +16,7 @@ public class Question extends Auditable {
     @NotNull
     @Getter
     @Setter
-    private String question;
+    private String questionText ;
 
     @NotNull
     @Getter
@@ -39,8 +39,8 @@ public class Question extends Auditable {
     {
 
     }
-    public Question(@NotNull String question, @NotNull String correctAnswer, @NotNull GameMode gameMode) {
-        this.question = question;
+    public Question(@NotNull String questionText, @NotNull String correctAnswer, @NotNull GameMode gameMode) {
+        this.questionText = questionText;
         this.correctAnswer = correctAnswer;
         this.gameMode = gameMode;
     }
