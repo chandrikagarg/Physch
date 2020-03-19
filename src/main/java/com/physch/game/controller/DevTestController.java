@@ -22,7 +22,7 @@ public class DevTestController {
     private AdminRepository adminRepository;
 
     @Autowired
-    private GamesRepository gamesRepository;
+    private GameRepository gameRepository;
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -53,7 +53,7 @@ public class DevTestController {
             player.getGames().clear();
             playerRepository.save(player);
         }
-        gamesRepository.deleteAll();
+        gameRepository.deleteAll();
         playerRepository.deleteAll();
         questionRepository.deleteAll();
         gameModeRepository.deleteAll();
@@ -98,7 +98,7 @@ public class DevTestController {
         game.setGameMode(isThisAFact);
         game.setLeader(luffy);
         game.getPlayers().add(luffy);
-        gamesRepository.save(game);
+        gameRepository.save(game);
 
         questionRepository.save(new Question(
                 "WHat is the name",
@@ -150,12 +150,12 @@ public class DevTestController {
     public List<Game>getAllGames()
     {
 
-        return gamesRepository.findAll();
+        return gameRepository.findAll();
     }
     @GetMapping("/games/{id}")
     public Game getGameById(@PathVariable(name="id") Long id)
     {
-        return gamesRepository.findById(id).orElseThrow();
+        return gameRepository.findById(id).orElseThrow();
 
     }
     @GetMapping("/rounds")
