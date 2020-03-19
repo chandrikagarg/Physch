@@ -20,13 +20,15 @@ public class Game extends Auditable {
     @Setter
     private Set<Player>players = new HashSet<>();
 
+    @ManyToOne
+    @JsonIdentityReference
     @Getter
     @Setter
-    @Enumerated(EnumType.STRING)
     @NotNull
     private GameMode gameMode;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    @OrderBy(value = "round_number asc")
     @JsonManagedReference
     @Getter
     @Setter
@@ -70,13 +72,18 @@ public class Game extends Auditable {
         this.numRounds = numRounds;
         this.hasEllen = hasEllen;
         this.leader = leader;
-        this.players.add(leader);
+        try {
+            addPlayer(leader);
+        } catch (InvalidGameActionException ignored) {
+        }
+//        this.players.add(leader);
     }
 
     public void addPlayer(Player player) throws InvalidGameActionException {
         if(!gameStatus.equals(GameStatus.PLAYERS_JOINING))
             throw new InvalidGameActionException("Can't Join after the Game has started");
         players.add(player);
+        player.setCurrentGame(this);
     }
     public void removePlayer(Player player) throws InvalidGameActionException
     {
@@ -84,6 +91,8 @@ public class Game extends Auditable {
             throw new InvalidGameActionException("No Such player found in the game");
         }
         players.remove(player);
+        if(player.getCurrentGame().equals(this))
+            player.setCurrentGame(null);
         if(players.size()==0||players.size()==1 && !gameStatus.equals(GameStatus.PLAYERS_JOINING))
         {
             endGame();
@@ -93,6 +102,10 @@ public class Game extends Auditable {
 
     public void startGame(Player player) throws InvalidGameActionException
     {
+        if(!gameStatus.equals(GameStatus.PLAYERS_JOINING))
+            throw new InvalidGameActionException("The Game has already started");
+        if(players.size()<2)
+            throw new InvalidGameActionException("Can't start the game with the single player");
         if(!player.equals(leader))
             throw new InvalidGameActionException("Only leaders can start the Game");
             startNewRound();
@@ -110,9 +123,6 @@ public class Game extends Auditable {
         rounds.add(new Round());
     }
 
-    private void endGame() {
-        gameStatus=GameStatus.ENDED;
-    }
 
 
     public void submitAnswer(Player player, String answer) throws InvalidGameActionException {
@@ -175,6 +185,14 @@ public class Game extends Auditable {
           throw new InvalidGameActionException("Game has not started");
       return rounds.get(rounds.size()-1);
 
+    }
+    private void endGame() {
+        gameStatus=GameStatus.ENDED;
+        for(Player player:players){
+            if(player.getCurrentGame().equals(this))
+            player.setCurrentGame(null);
+
+        }
     }
 
     public String getGameState()

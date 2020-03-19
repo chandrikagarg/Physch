@@ -36,7 +36,8 @@ public class DevTestController {
     @Autowired
     private UserRepository userRepository;
 
-
+    @Autowired
+    private GameModeRepository gameModeRepository;
 
     @GetMapping("/")
     public String hello() {
@@ -55,6 +56,7 @@ public class DevTestController {
         gamesRepository.deleteAll();
         playerRepository.deleteAll();
         questionRepository.deleteAll();
+        gameModeRepository.deleteAll();
         Player luffy = new Player.Builder()
                 .alias("Dhoni")
                 .email("dhoni@gmail.com")
@@ -69,9 +71,31 @@ public class DevTestController {
                 .saltedHashedPassword("ae")
                 .build();
         playerRepository.save(robin);
-
+        GameMode isThisAFact = new GameMode(
+                "Is this a fact",
+                "https://i.pinimg.com/originals/29/cb/75/29cb75e488831ba018fe5f0925b8e39f.png",
+                "is this a fact description");
+        gameModeRepository.save(isThisAFact);
+        gameModeRepository.save(
+                new GameMode(
+                        "Word_Up",
+                        "https://i.pinimg.com/originals/29/cb/75/29cb75e488831ba018fe5f0925b8e39f.png",
+                        "word up description"
+                ));
+        gameModeRepository.save(
+                new GameMode(
+                        "Un-Scramble",
+                        "https://i.pinimg.com/originals/29/cb/75/29cb75e488831ba018fe5f0925b8e39f.png",
+                        "unscramble description"
+                ));
+        gameModeRepository.save(
+                new GameMode(
+                        "Movie Buff",
+                        "https://i.pinimg.com/originals/29/cb/75/29cb75e488831ba018fe5f0925b8e39f.png",
+                        "movie buff description"
+                ));
         Game game = new Game();
-        game.setGameMode(GameMode.IS_THIS_A_FACT);
+        game.setGameMode(isThisAFact);
         game.setLeader(luffy);
         game.getPlayers().add(luffy);
         gamesRepository.save(game);
@@ -79,7 +103,7 @@ public class DevTestController {
         questionRepository.save(new Question(
                 "WHat is the name",
                 "chandrika",
-                GameMode.IS_THIS_A_FACT
+                isThisAFact
         ));
 
         return "populated";

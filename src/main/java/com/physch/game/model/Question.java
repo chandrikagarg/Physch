@@ -1,10 +1,12 @@
 package com.physch.game.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +20,7 @@ public class Question extends Auditable {
     @Setter
     private String questionText ;
 
-    @NotNull
+    @NotBlank
     @Getter
     @Setter
     private String correctAnswer;
@@ -29,7 +31,8 @@ public class Question extends Auditable {
     @Setter
     private Set<EllenAnswer> ellenAnswers= new HashSet<>();
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JsonIdentityReference
     @NotNull
     @Getter
     @Setter

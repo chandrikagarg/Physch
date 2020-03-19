@@ -77,7 +77,7 @@ public class Round extends Auditable {
             throw  new InvalidGameActionException("Player has already submitted the answer for this round");
         for(PlayerAnswer existingaAnswer:submittedAnswers.values())
         {
-            if(answer.equals(existingaAnswer))
+            if(answer.equals(existingaAnswer.getAnswer()))
                 throw new InvalidGameActionException("Duplicate Answer");
             submittedAnswers.put(player,new PlayerAnswer(this,player,answer));
         }
@@ -92,6 +92,8 @@ public class Round extends Auditable {
             throw new InvalidGameActionException("Player has already selected the answer for this round");
         if(selectedAnswer.getPlayer().equals(player))
             throw new InvalidGameActionException("Can't select your own answer");
+        if(!selectedAnswer.getRound().equals(this))
+            throw new InvalidGameActionException("No such answer was submitted in this round");
         selectedAnswers.put(player,selectedAnswer);
 
     }

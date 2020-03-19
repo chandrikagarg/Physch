@@ -37,6 +37,11 @@ public class Player extends User {
       @Setter
     private Set<Game> games = new HashSet<>();
 
+    @ManyToOne
+    @JsonIdentityReference
+    @Getter
+    @Setter
+     private Game currentGame=null;
     public Player()
     {
 
@@ -50,10 +55,6 @@ public class Player extends User {
         setPicURL(builder.picURL);
     }
 
-    public Game getCurrentGame() {
-        //todo
-        return new Game();
-    }
 
     public static final class Builder {
         private @Email @NotBlank String email;

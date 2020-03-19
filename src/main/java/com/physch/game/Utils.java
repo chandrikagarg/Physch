@@ -14,8 +14,8 @@ public class Utils {
         questionRepository=(QuestionRepository) ApplicationContextProvider
                 .getApplicationContext()
                 .getBean("questionRepository");
-        SpringConfiguration
-                .contextProvider();
+//        SpringConfiguration
+//                .contextProvider();
         ellenAnswerRepository= (EllenAnswerRepository) ApplicationContextProvider
                 .getApplicationContext()
                 .getBean("ellenAnswerRepository");
