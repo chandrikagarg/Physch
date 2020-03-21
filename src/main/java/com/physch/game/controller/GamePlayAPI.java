@@ -52,7 +52,7 @@ public class GamePlayAPI {
         }
         else
         {
-            response.put("GameState",currentGame.getGameState());
+            response.put("gameState",currentGame.getGameState());
         }
         return response;
     }

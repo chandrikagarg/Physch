@@ -28,7 +28,11 @@
     </div>
     <div v-if="currentGame">
         <div class="section">
-            display the game state
+            {{ gameState.id }}
+            {{ gameState.numRounds }}
+            {{ gameState.mode }}
+            {{ gameState }}
+
         </div>
     </div>
     <div v-else>

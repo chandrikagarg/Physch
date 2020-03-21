@@ -210,7 +210,8 @@ public class Game extends Auditable {
         for(Player player:players)
         {
             JSONObject data = new JSONObject();
-            data.put("alias",playerData);
+            data.put("alias",player.getAlias());
+            playerData.add(data);
         }
         state.put("players",playerData);
         return state;
