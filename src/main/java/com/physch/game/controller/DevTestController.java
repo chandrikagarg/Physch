@@ -3,6 +3,7 @@ package com.physch.game.controller;
 import com.physch.game.Constants;
 import com.physch.game.Pair;
 import com.physch.game.Utils;
+import com.physch.game.exceptions.InvalidGameActionException;
 import com.physch.game.repositories.*;
 import com.physch.game.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,7 @@ public class DevTestController {
     }
 
     @GetMapping("/populate")
-    public String populateDB()
-    {
+    public String populateDB() throws InvalidGameActionException {
         for(Player player:playerRepository.findAll())
         {
             player.getGames().clear();
@@ -120,6 +120,15 @@ public class DevTestController {
                 "chandrika",
                 isThisAFact
         ));
+
+        Game game1 = new Game(isThisAFact,15,true,luffy);
+        game.addPlayer(robin);
+        gameRepository.save(game1);
+
+        game.startGame(luffy);
+        gameRepository.save(game1);
+
+
 
         return "populated";
     }

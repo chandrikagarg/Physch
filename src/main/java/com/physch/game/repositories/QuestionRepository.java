@@ -15,8 +15,9 @@ public interface QuestionRepository  extends JpaRepository<Question, Long> {
     //jpa provides its own query language- abstracts out the difference
     //JPA- ORM ,so we can code db stuff in java
     // abstracts out the difference between DB backends
-
-    @Query(value = "select * from questions where gameMode=:gameMode order by RAND() LIMIT 1",nativeQuery = true)
-    Question getRandomQuestions(GameMode gameMode);
+    //JPA-> db agnostic
+    //native -> postgres
+    @Query(value = "select * from questions where game_mode_id=:gameModeId order by RANDOM() LIMIT 1",nativeQuery = true)
+    Question getRandomQuestions(Long gameModeId);
 
 }

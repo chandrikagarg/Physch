@@ -54,13 +54,13 @@ public class Utils {
     }
     public static Question getRandomQuestion(GameMode gameMode)
     {
-       return  questionRepository.getRandomQuestions(gameMode);
+       return  questionRepository.getRandomQuestions(gameMode.getId());
 
     }
 
     public static EllenAnswer getRandomEllenAnswer(Question question)
     {
-        return ellenAnswerRepository.getRandomAnswer(question);
+        return ellenAnswerRepository.getRandomAnswer(question.getId());
     }
 
     public static String getSecretCodeFromGameId(Long id)

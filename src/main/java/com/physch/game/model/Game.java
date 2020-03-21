@@ -70,6 +70,8 @@ public class Game extends Auditable {
     private Set<Player> readyPlayers = new HashSet<>();
 
     public Game() {}
+
+
     public Game(@NotNull GameMode gameMode, int numRounds, Boolean hasEllen, @NotNull Player leader) {
         this.gameMode = gameMode;
         this.numRounds = numRounds;
@@ -125,7 +127,7 @@ public class Game extends Auditable {
            round.setEllenanswer(Utils.getRandomEllenAnswer(question));
 
         }
-        rounds.add(new Round());
+        rounds.add(round);
     }
 
 
