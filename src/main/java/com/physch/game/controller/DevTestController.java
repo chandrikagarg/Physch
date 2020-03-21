@@ -68,8 +68,8 @@ public class DevTestController {
                 .email("dhoni@gmail.com")
                 .saltedHashedPassword("akj")
                 .build();
-        Set<Game> x=luffy.getGames(); //collection->lazy
-        x.iterator();
+//        Set<Game> x=luffy.getGames(); //collection->lazy
+//        x.iterator();
         playerRepository.save(luffy);
         Player robin = new Player.Builder()
                 .alias("Sachin")
@@ -100,33 +100,34 @@ public class DevTestController {
                         "https://i.pinimg.com/originals/29/cb/75/29cb75e488831ba018fe5f0925b8e39f.png",
                         "movie buff description"
                 ));
-        Game game = new Game();
-        game.setGameMode(isThisAFact);
-        game.setLeader(luffy);
-        game.getPlayers().add(luffy);
-        gameRepository.save(game);
+//        Game game = new Game();
+//        game.setGameMode(isThisAFact);
+//        game.setLeader(luffy);
+//        game.getPlayers().add(luffy);
+//        gameRepository.save(game);
 
         List<Question> questions = new ArrayList<>();
         for(Map.Entry<String,String> fileMode : Constants.QA_FILES.entrySet()) {
-            String filename = fileMode.getKey();
+//            String filename = fileMode.getKey();
             GameMode gameMode = gameModeRepository.findByName(fileMode.getValue()).orElseThrow();
             for(Pair<String,String> questionAnswer: Utils.readQAFile(fileMode.getKey())) {
                 questions.add(new Question(questionAnswer.getFirst(),questionAnswer.getSecond(),gameMode));
             }
         }
+
         questionRepository.saveAll(questions);
         questionRepository.save(new Question(
-                "WHat is the name",
+                "What is the name",
                 "chandrika",
                 isThisAFact
         ));
 
-        Game game1 = new Game(isThisAFact,15,true,luffy);
+        Game game = new Game(isThisAFact,15,true,luffy);
         game.addPlayer(robin);
-        gameRepository.save(game1);
+        gameRepository.save(game);
 
         game.startGame(luffy);
-        gameRepository.save(game1);
+        gameRepository.save(game);
 
 
 

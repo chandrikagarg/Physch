@@ -1,4 +1,5 @@
 package com.physch.game.controller;
+import com.physch.game.exceptions.InvalidGameActionException;
 import com.physch.game.model.Game;
 import com.physch.game.model.GameMode;
 import com.physch.game.model.Player;
@@ -76,6 +77,25 @@ public class GamePlayAPI {
 //        System.out.println("GameMode......................."+mode.getName());
         gameRepository.save(new Game(mode, numRounds, hasEllen, leader));
         return getData(leader);
+    }
+
+    @GetMapping("/luffy-submit")
+    public String luffySubmit() throws InvalidGameActionException {
+        Player luffy = playerRepository.findByEmail("dhoni@gmail.com").orElseThrow();
+        Game game = luffy.getCurrentGame();
+        System.out.println("game.............."+game.getGameStatus());
+        System.out.println("GameMode................"+game.getGameMode().getName());
+        game.submitAnswer(luffy,"answer");
+        gameRepository.save(game);
+        return "done";
+    }
+    @GetMapping("/robin-submit")
+    public String robinSubmit() throws InvalidGameActionException {
+        Player robin = playerRepository.findByEmail("sachin@gmail.com").orElseThrow();
+        Game game = robin.getCurrentGame();
+        game.submitAnswer(robin,"answer");
+        gameRepository.save(game);
+        return "done";
     }
 
 

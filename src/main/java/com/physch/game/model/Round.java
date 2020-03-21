@@ -65,22 +65,22 @@ public class Round extends Auditable {
         this.roundNumber = roundNumber;
     }
 
-//    public Round(@NotNull Game game, @NotNull Question question, EllenAnswer ellenanswer, @NotNull int roundNumber) {
-//        this.game = game;
-//        this.question = question;
-//        this.ellenanswer = ellenanswer;
-//        this.roundNumber = roundNumber;
-//    }
+    public Round(@NotNull Game game, @NotNull Question question, EllenAnswer ellenanswer, @NotNull int roundNumber) {
+        this.game = game;
+        this.question = question;
+        this.ellenanswer = ellenanswer;
+        this.roundNumber = roundNumber;
+    }
 
     public void submitAnswer(Player player, String answer) throws InvalidGameActionException{
+        System.out.println("answer in round..........."+answer);
         if(submittedAnswers.containsKey(player))
             throw  new InvalidGameActionException("Player has already submitted the answer for this round");
-        for(PlayerAnswer existingaAnswer:submittedAnswers.values())
-        {
-            if(answer.equals(existingaAnswer.getAnswer()))
+        for(PlayerAnswer existingAnswer:submittedAnswers.values())
+            if(answer.equals(existingAnswer.getAnswer()))
                 throw new InvalidGameActionException("Duplicate Answer");
             submittedAnswers.put(player,new PlayerAnswer(this,player,answer));
-        }
+            System.out.println("submitted answer map............."+submittedAnswers.values().iterator());
     }
     public boolean allAnswersSubmitted(int numPlayers) {
 

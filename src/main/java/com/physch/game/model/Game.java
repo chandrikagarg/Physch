@@ -115,17 +115,17 @@ public class Game extends Auditable {
             throw new InvalidGameActionException("Can't start the game with the single player");
         if(!player.equals(leader))
             throw new InvalidGameActionException("Only leaders can start the Game");
-            startNewRound();
+        startNewRound();
     }
 
     private void startNewRound() {
-        gameStatus=gameStatus.SUBMITTING_ANSWERS;
+        System.out.println("startNewRound..................................");
+        gameStatus=GameStatus.SUBMITTING_ANSWERS;
         Question question =  Utils.getRandomQuestion(gameMode);
         Round round = new Round(this,question,rounds.size() +1);
         if(hasEllen)
         {
            round.setEllenanswer(Utils.getRandomEllenAnswer(question));
-
         }
         rounds.add(round);
     }
@@ -133,6 +133,7 @@ public class Game extends Auditable {
 
 
     public void submitAnswer(Player player, String answer) throws InvalidGameActionException {
+        System.out.println("answer............"+answer);
 
         if(answer.length()==0)
             throw new InvalidGameActionException("Answer cannot be Empty");
@@ -142,11 +143,14 @@ public class Game extends Auditable {
         if(!gameStatus.equals(GameStatus.SUBMITTING_ANSWERS))
             throw new InvalidGameActionException("Game is not accepting answer at present");
         Round currentRound = getCurrentRound();
+        System.out.println("currentRound Id........"+currentRound.getId());
         currentRound.submitAnswer(player,answer);
         if(currentRound.allAnswersSubmitted(players.size()))
         {
-            gameStatus=gameStatus.SELECTING_ANSWERS;
+            gameStatus=GameStatus.SELECTING_ANSWERS;
         }
+
+
     }
 
     public void selectAnswer(Player player,PlayerAnswer selectedAnswer) throws  InvalidGameActionException
@@ -161,7 +165,7 @@ public class Game extends Auditable {
         currentRound.selectAnswer(player,selectedAnswer);
         if(currentRound.allAnswersSelected(players.size())) {
             if (rounds.size() < numRounds)
-                gameStatus = gameStatus.WAITING_FOR_READY;
+                gameStatus = GameStatus.WAITING_FOR_READY;
             else
                 endGame();
         }
