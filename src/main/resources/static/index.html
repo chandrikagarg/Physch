@@ -59,20 +59,21 @@
             playerAlias: "",
             gameModes: [],
             hasEllen: false,
-            numRounds:10
+            numRounds:10,
+            currentGame:null,
+            gameState:{},
         },
     methods: {
 
         createGame: function (mode) {
-            fetch(
-                '/play/create-game?' + new URLSearchParams({
+            fetch('/play/create-game?' + new URLSearchParams({
                 mode: mode,
                 rounds: this.numRounds,
                 ellen: this.hasEllen
-             }));
+             })).then(this.updateDataFromResponse);
 
         },
-        getDataFromResponse: function(response) {
+        updateDataFromResponse: function(response) {
         console.log("response",response);
             let self=this;
             response.json().then(function(data) {
@@ -87,7 +88,7 @@
     }
     },
     mounted: function() {
-            fetch('/play/').then(this.getDataFromResponse);
+            fetch('/play/').then(this.updateDataFromResponse);
         }
     })
 </script>

@@ -6,6 +6,9 @@ import com.physch.game.Utils;
 import com.physch.game.exceptions.InvalidGameActionException;
 import lombok.Getter;
 import lombok.Setter;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
@@ -58,7 +61,7 @@ public class Game extends Auditable {
     @Enumerated(EnumType.STRING)
     @Getter
     @Setter
-    private GameStatus gameStatus;
+    private GameStatus gameStatus = GameStatus.PLAYERS_JOINING;
 
     @ManyToMany
     @JsonIdentityReference
@@ -73,10 +76,12 @@ public class Game extends Auditable {
         this.hasEllen = hasEllen;
         this.leader = leader;
         try {
+            System.out.println("Leader......................."+leader.getAlias());
             addPlayer(leader);
         } catch (InvalidGameActionException ignored) {
+            System.out.println("inside catch block error ..................................");
         }
-//        this.players.add(leader);
+        this.players.add(leader);
     }
 
     public void addPlayer(Player player) throws InvalidGameActionException {
@@ -195,8 +200,20 @@ public class Game extends Auditable {
         }
     }
 
-    public String getGameState()
+    public JSONObject getGameState()
     {
-        return "Some string here which will have all data that the front end needs";
+        JSONObject state = new JSONObject();
+        state.put("id",getId());
+        state.put("numRounds",numRounds);
+        state.put("mode",gameMode.getName());
+        JSONArray playerData = new JSONArray();
+        for(Player player:players)
+        {
+            JSONObject data = new JSONObject();
+            data.put("alias",playerData);
+        }
+        state.put("players",playerData);
+        return state;
+
     }
 }

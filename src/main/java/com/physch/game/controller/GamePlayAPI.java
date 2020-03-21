@@ -28,41 +28,54 @@ public class GamePlayAPI {
     {
         return playerRepository.findByEmail(authentication.getName()).orElseThrow();
     }
-    @GetMapping("")
-    public JSONObject play(Authentication authentication)
+
+    private JSONObject getData(Player player)
     {
-        Player player = getCurrentPlayer(authentication);
         Game currentGame = player.getCurrentGame();
         JSONObject response = new JSONObject();
 //        obj.put("hello","world");
 //        obj.put("name", "chandrika");
         response.put("playerAlias", player.getAlias());
         response.put("currentGame",currentGame==null?null:currentGame.getId());
-        JSONArray gameModes = new JSONArray();
-        for(GameMode mode:gameModeRepository.findAll())
+        if(currentGame==null)
         {
-            JSONObject gameMode = new JSONObject();
-            gameMode.put("title",mode.getName());
-            gameMode.put("image",mode.getPicture());
-            gameMode.put("description",mode.getDescription());
-            gameModes.add(gameMode);
+            JSONArray gameModes = new JSONArray();
+            for(GameMode mode:gameModeRepository.findAll())
+            {
+                JSONObject gameMode = new JSONObject();
+                gameMode.put("title",mode.getName());
+                gameMode.put("image",mode.getPicture());
+                gameMode.put("description",mode.getDescription());
+                gameModes.add(gameMode);
+            }
+            response.put("gameModes",gameModes);
         }
-        response.put("gameModes",gameModes);
+        else
+        {
+            response.put("GameState",currentGame.getGameState());
+        }
         return response;
+    }
+    @GetMapping("")
+    public JSONObject play(Authentication authentication)
+    {
+        Player player = getCurrentPlayer(authentication);
+        return getData(player);
 
     }
 
     @GetMapping("/create-game")
-    public void createGame(Authentication authentication,
+    public JSONObject createGame(Authentication authentication,
                            @RequestParam(name="mode") String gameMode,
                            @RequestParam(name="rounds") Integer numRounds,
                            @RequestParam(name="ellen") Boolean hasEllen
                            ) {
         Player leader = getCurrentPlayer(authentication);
+//        System.out.println("Leader......................."+leader.getAlias());
         GameMode mode = gameModeRepository.findByName(gameMode).orElseThrow();
+//        System.out.println("GameMode......................."+mode.getName());
         gameRepository.save(new Game(mode, numRounds, hasEllen, leader));
-
-
+        return getData(leader);
     }
 
 

@@ -51,6 +51,7 @@ public class DevTestController {
         for(Player player:playerRepository.findAll())
         {
             player.getGames().clear();
+            player.setCurrentGame(null);
             playerRepository.save(player);
         }
         gameRepository.deleteAll();
