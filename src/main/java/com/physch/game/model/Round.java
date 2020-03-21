@@ -79,7 +79,12 @@ public class Round extends Auditable {
         for(PlayerAnswer existingAnswer:submittedAnswers.values())
             if(answer.equals(existingAnswer.getAnswer()))
                 throw new InvalidGameActionException("Duplicate Answer");
-            submittedAnswers.put(player,new PlayerAnswer(this,player,answer));
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        submittedAnswers.put(player,new PlayerAnswer(this,player,answer));
             System.out.println("submitted answer map............."+submittedAnswers.values().iterator());
     }
     public boolean allAnswersSubmitted(int numPlayers) {
