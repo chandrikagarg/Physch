@@ -1,5 +1,8 @@
 package com.physch.game.controller;
 
+import com.physch.game.Constants;
+import com.physch.game.Pair;
+import com.physch.game.Utils;
 import com.physch.game.repositories.*;
 import com.physch.game.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -101,6 +106,15 @@ public class DevTestController {
         game.getPlayers().add(luffy);
         gameRepository.save(game);
 
+        List<Question> questions = new ArrayList<>();
+        for(Map.Entry<String,String> fileMode : Constants.QA_FILES.entrySet()) {
+            String filename = fileMode.getKey();
+            GameMode gameMode = gameModeRepository.findByName(fileMode.getValue()).orElseThrow();
+            for(Pair<String,String> questionAnswer: Utils.readQAFile(fileMode.getKey())) {
+                questions.add(new Question(questionAnswer.getFirst(),questionAnswer.getSecond(),gameMode));
+            }
+        }
+        questionRepository.saveAll(questions);
         questionRepository.save(new Question(
                 "WHat is the name",
                 "chandrika",
