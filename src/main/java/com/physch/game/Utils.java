@@ -37,7 +37,9 @@ public class Utils {
             wordsIndices = new HashMap<>();
             int index=0;
             do {
-                word = br.readLine().strip();
+                word = br.readLine();
+                if(word==null) break;
+                word = word.strip();
                 wordsList.add(word);
                 wordsIndices.put(word,index);
                 index+=1;
@@ -88,14 +90,17 @@ public class Utils {
     public static  List<Pair<String,String>> readQAFile(String filename)
     {
         List<Pair<String,String>> questions= new ArrayList<>();
+        int count =0;
         try {
                 BufferedReader br = new BufferedReader(new FileReader(ResourceUtils.getFile(filename)));
                 String questionText, correctAnswer;
                 do {
-                    questionText = br.readLine().strip();
-                    correctAnswer = br.readLine().strip();
-                    questions.add(new Pair<>(questionText, correctAnswer));
-                } while (questionText != null);
+                    questionText = br.readLine();
+                    correctAnswer = br.readLine();
+                    if(questionText == null || correctAnswer == null) break;
+                    questions.add(new Pair<>(questionText.strip(), correctAnswer.strip()));
+                    count++;
+                } while (questionText != null && count <Constants.MAX_QUESTIONS_TO_READ);
             } catch(IOException ignored){}
 
         return questions;
