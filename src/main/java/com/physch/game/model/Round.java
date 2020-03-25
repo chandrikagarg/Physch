@@ -85,7 +85,7 @@ public class Round extends Auditable {
             e.printStackTrace();
         }
         submittedAnswers.put(player,new PlayerAnswer(this,player,answer));
-            System.out.println("submitted answer map............."+submittedAnswers.values().iterator());
+            System.out.println("submitted answer map..........."+submittedAnswers.values().iterator());
     }
     public boolean allAnswersSubmitted(int numPlayers) {
 
